@@ -6,6 +6,10 @@
 /out-tsc
 /bazel-out
 
+# Maven / Java
+/target
+*.class
+
 # Node
 /node_modules
 npm-debug.log
