@@ -22,9 +22,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // Seules /auth/register et /auth/login sont publiques selon la spec ("toutes les routes
+    // nécessitent l'authentification sauf création de compte, login et documentation Swagger").
+    // /images/** est le seul ajout volontaire : les photos des locations sont affichées via de
+    // simples balises <img> côté Angular, qui ne peuvent jamais porter le token JWT (seules les
+    // requêtes HttpClient passent par l'intercepteur jwt.interceptor.ts). Impossible d'authentifier
+    // une requête <img> sans modifier le front-end (hors périmètre), donc les fichiers uploadés
+    // sont servis publiquement plutôt que de laisser l'API elle-même non sécurisée.
     private static final String[] PUBLIC_ROUTES = {
             "/auth/register",
             "/auth/login",
+            "/images/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**"

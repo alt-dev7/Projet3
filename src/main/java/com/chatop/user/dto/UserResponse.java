@@ -1,4 +1,4 @@
-package com.chatop.auth.dto;
+package com.chatop.user.dto;
 
 import com.chatop.user.User;
 import com.fasterxml.jackson.annotation.JsonProperty;

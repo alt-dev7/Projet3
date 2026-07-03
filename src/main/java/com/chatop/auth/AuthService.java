@@ -3,7 +3,7 @@ package com.chatop.auth;
 import com.chatop.auth.dto.AuthResponse;
 import com.chatop.auth.dto.LoginRequest;
 import com.chatop.auth.dto.RegisterRequest;
-import com.chatop.auth.dto.UserResponse;
+import com.chatop.user.dto.UserResponse;
 import com.chatop.exception.EmailAlreadyUsedException;
 import com.chatop.security.JwtService;
 import com.chatop.user.User;
