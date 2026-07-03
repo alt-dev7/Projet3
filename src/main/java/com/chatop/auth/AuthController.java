@@ -4,6 +4,9 @@ import com.chatop.auth.dto.AuthResponse;
 import com.chatop.auth.dto.LoginRequest;
 import com.chatop.auth.dto.RegisterRequest;
 import com.chatop.user.dto.UserResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,11 +25,23 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @Operation(summary = "Créer un compte utilisateur",
+            description = "Crée un nouvel utilisateur et renvoie un token JWT prêt à l'emploi.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Compte créé, token JWT renvoyé"),
+            @ApiResponse(responseCode = "400", description = "Champ manquant/invalide ou email déjà utilisé")
+    })
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
+    @Operation(summary = "Se connecter",
+            description = "Authentifie un utilisateur avec son email et son mot de passe et renvoie un token JWT.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Authentification réussie, token JWT renvoyé"),
+            @ApiResponse(responseCode = "401", description = "Email ou mot de passe invalide")
+    })
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
@@ -37,6 +52,12 @@ public class AuthController {
     // Tant qu'aucun utilisateur n'est connecté, elle renvoie légitimement 401, ce qui apparaît
     // comme une erreur réseau rouge dans la console du navigateur — c'est un comportement
     // attendu du front, pas un bug côté back, et impossible à supprimer sans modifier le front.
+    @Operation(summary = "Récupérer le profil de l'utilisateur connecté",
+            description = "Renvoie les informations de l'utilisateur identifié par le token JWT fourni.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Profil de l'utilisateur connecté"),
+            @ApiResponse(responseCode = "401", description = "Token JWT manquant, invalide ou expiré")
+    })
     @GetMapping("/me")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UserResponse> me(Authentication authentication) {
