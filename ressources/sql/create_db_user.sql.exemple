@@ -1,0 +1,4 @@
+CREATE DATABASE chatop_db;
+CREATE USER 'chatop_user'@'localhost' IDENTIFIED BY 'changeme';
+GRANT ALL PRIVILEGES ON chatop_db.* TO 'chatop_user'@'localhost';
+FLUSH PRIVILEGES;
